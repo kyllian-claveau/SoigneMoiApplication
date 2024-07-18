@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:soignemoiapplication/src/api/api.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'home_screen.dart';
 
 class SignIn extends StatefulWidget {
@@ -35,12 +36,19 @@ class _SignInState extends State<SignIn> {
       if (body['code'] == 401) {
         _showError('Invalid Credentials');
       } else if (body['token'] != null) {
-        SharedPreferences localStorage = await SharedPreferences.getInstance();
-        localStorage.setString('token', body['token']);
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => HomeScreen()),
-        );
+        // Decode the token to check for the role
+        Map<String, dynamic> decodedToken = JwtDecoder.decode(body['token']);
+        List<dynamic> roles = decodedToken['roles'];
+        if (roles.contains('ROLE_DOCTOR')) {
+          SharedPreferences localStorage = await SharedPreferences.getInstance();
+          localStorage.setString('token', body['token']);
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => HomeScreen()),
+          );
+        } else {
+          _showError('Access denied. Only doctors can log in.');
+        }
       } else {
         _showError('Unexpected error. Please try again.');
       }
@@ -128,6 +136,7 @@ class _SignInState extends State<SignIn> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     backgroundColor: Colors.teal,
+                    foregroundColor: Colors.white,
                   ),
                   child: const Text(
                     'Sign In',

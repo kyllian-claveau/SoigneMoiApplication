@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:soignemoiapplication/src/view/home_screen.dart';
 import 'package:soignemoiapplication/src/view/sign_in.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 void main() {
+  tz.initializeTimeZones();
+  tz.setLocalLocation(tz.getLocation('Europe/Paris'));
   runApp(MyApp());
 }
 

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Api {
@@ -27,5 +28,11 @@ class Api {
   static Future<void> storeToken(String token) async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     localStorage.setString('token', token);
+  }
+
+  static bool hasRoleDoctor(String token) {
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+    List<dynamic> roles = decodedToken['roles'];
+    return roles.contains('ROLE_DOCTOR');
   }
 }

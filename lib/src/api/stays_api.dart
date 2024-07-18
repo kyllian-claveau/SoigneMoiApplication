@@ -68,35 +68,35 @@ class StayAPI {
 
 class DoctorStay {
   final int id;
-  final int specialtyId;
   final int doctorId;
   final int userId;
+  final String userFirstname;
+  final String userLastname;
   final DateTime startDate;
   final DateTime endDate;
   final String reason;
-  final int scheduleId;
 
   DoctorStay({
     required this.id,
-    required this.specialtyId,
     required this.doctorId,
     required this.userId,
+    required this.userFirstname,
+    required this.userLastname,
     required this.startDate,
     required this.endDate,
     required this.reason,
-    required this.scheduleId,
   });
 
   factory DoctorStay.fromJson(Map<String, dynamic> json) {
     return DoctorStay(
       id: json['id'],
-      specialtyId: json['specialty_id'],
       doctorId: json['doctor_id'],
       userId: json['user_id'],
+      userFirstname: json['user_firstname'],
+      userLastname: json['user_firstname'],
       startDate: DateTime.parse(json['start_date']),
       endDate: DateTime.parse(json['end_date']),
       reason: json['reason'],
-      scheduleId: json['schedule_id'],
     );
   }
 }
