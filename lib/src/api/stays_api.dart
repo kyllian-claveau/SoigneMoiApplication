@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StayAPI {
-  static const String baseUrl = 'http://10.0.2.2:8000/api/doctor';
+  static const String baseUrl = 'https://soignemoiproject.online/api/doctor';
 
   static Future<List<dynamic>> fetchStays() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
@@ -21,12 +21,14 @@ class StayAPI {
     print('Full URL: $fullUrl');
 
     try {
-      final response = await http.get(
+      final response = await http.post(
         Uri.parse(fullUrl),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $token',
         },
+        body: jsonEncode(<String, String>{
+          'token': token,
+        }),
       );
 
       print('HTTP response code: ${response.statusCode}');
@@ -65,7 +67,6 @@ class StayAPI {
   }
 }
 
-
 class DoctorStay {
   final int id;
   final int doctorId;
@@ -93,7 +94,7 @@ class DoctorStay {
       doctorId: json['doctor_id'],
       userId: json['user_id'],
       userFirstname: json['user_firstname'],
-      userLastname: json['user_firstname'],
+      userLastname: json['user_lastname'],
       startDate: DateTime.parse(json['start_date']),
       endDate: DateTime.parse(json['end_date']),
       reason: json['reason'],

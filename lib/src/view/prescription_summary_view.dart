@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:soignemoiapplication/src/api/prescription_api.dart';
-import 'package:soignemoiapplication/src/view/home_screen.dart';
+import 'package:soignemoiapplication/src/layout/header.dart';
+import 'package:soignemoiapplication/src/layout/footer.dart';
+import 'home_screen.dart';
 
 class PrescriptionSummaryView extends StatefulWidget {
   final int prescriptionId;
@@ -36,7 +38,7 @@ class _PrescriptionSummaryViewState extends State<PrescriptionSummaryView> {
         isLoading = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to fetch prescription details: $e')),
+        SnackBar(content: Text('Échec de la récupération des détails de la prescription : $e')),
       );
     }
   }
@@ -63,7 +65,7 @@ class _PrescriptionSummaryViewState extends State<PrescriptionSummaryView> {
           endDate: DateTime.parse(endDateController.text),
         );
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('End date updated successfully')),
+          SnackBar(content: Text('Date de fin mise à jour avec succès')),
         );
         // Rediriger vers HomeScreen après la mise à jour
         Navigator.pushReplacement(
@@ -72,7 +74,7 @@ class _PrescriptionSummaryViewState extends State<PrescriptionSummaryView> {
         );
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to update end date: $e')),
+          SnackBar(content: Text('Échec de la mise à jour de la date de fin : $e')),
         );
       }
     }
@@ -81,86 +83,84 @@ class _PrescriptionSummaryViewState extends State<PrescriptionSummaryView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Prescription Summary'),
-      ),
-      body: isLoading
-          ? Center(child: CircularProgressIndicator())
-          : prescriptionDetails == null
-          ? Center(child: Text('No details available'))
-          : Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Card(
-                elevation: 5,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Prescription ID: ${prescriptionDetails!['id']}',
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                        'Start Date: ${prescriptionDetails!['start_date']}',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      SizedBox(height: 10),
-                      SizedBox(height: 5),
-                      TextFormField(
-                        controller: endDateController,
-                        decoration: InputDecoration(
-                          labelText: 'End Date',
-                          border: OutlineInputBorder(),
-                          suffixIcon: Icon(Icons.calendar_today),
-                        ),
-                        readOnly: true,
-                        onTap: () => _selectDate(context, endDateController),
-                      ),
-                      SizedBox(height: 10),
-                      ElevatedButton(
-                        onPressed: _updateEndDate,
-                        child: Text('Update End Date'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blueAccent,
-                          foregroundColor: Colors.white,
-                          textStyle: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+      appBar: const AppHeader(),
+      body: Column(
+        children: [
+          const Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text(
+              'Résumé de la Prescription',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.teal,
               ),
-              SizedBox(height: 20),
-              Text(
-                'Medications:',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 10),
-              ...prescriptionDetails!['medications'].map<Widget>((med) {
-                return Card(
-                  elevation: 3,
-                  margin: EdgeInsets.symmetric(vertical: 5),
-                  child: ListTile(
-                    title: Text(
-                      med['name'],
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Text(med['dosage']),
-                  ),
-                );
-              }).toList(),
-            ],
+              textAlign: TextAlign.center,
+            ),
           ),
-        ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : prescriptionDetails == null
+                  ? Center(child: Text('Aucun détail disponible'))
+                  : SingleChildScrollView(
+                child: Card(
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Prescription ID: ${prescriptionDetails!['id']}',
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          'Date de début: ${prescriptionDetails!['start_date']}',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        SizedBox(height: 10),
+                        TextFormField(
+                          controller: endDateController,
+                          decoration: InputDecoration(
+                            labelText: 'Date de fin',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            suffixIcon: Icon(Icons.calendar_today),
+                          ),
+                          readOnly: true,
+                          onTap: () => _selectDate(context, endDateController),
+                        ),
+                        SizedBox(height: 10),
+                        Center(
+                          child: ElevatedButton(
+                            onPressed: _updateEndDate,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.teal,
+                              padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 36),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            child: Text('Mettre à jour la date de fin'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const AppFooter(isHomeScreen: false),
+        ],
       ),
     );
   }

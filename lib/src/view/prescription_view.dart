@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; // Pour le formatage de la date
+import 'package:intl/intl.dart';
 import 'package:soignemoiapplication/src/api/prescription_api.dart';
+import 'package:soignemoiapplication/src/layout/header.dart';
+import 'package:soignemoiapplication/src/layout/footer.dart';
 
 class PrescriptionView extends StatefulWidget {
   final int stayId;
@@ -16,8 +18,8 @@ class _PrescriptionViewState extends State<PrescriptionView> {
   List<Map<String, dynamic>> medications = [];
   TextEditingController medicationController = TextEditingController();
   TextEditingController dosageController = TextEditingController();
-  TextEditingController startDateController = TextEditingController(); // Controller pour la date de début
-  TextEditingController endDateController = TextEditingController(); // Controller pour la date de fin
+  TextEditingController startDateController = TextEditingController();
+  TextEditingController endDateController = TextEditingController();
 
   void _addMedication() {
     if (medicationController.text.isNotEmpty && dosageController.text.isNotEmpty) {
@@ -31,7 +33,7 @@ class _PrescriptionViewState extends State<PrescriptionView> {
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please enter both medication and dosage')),
+        SnackBar(content: Text('Veuillez entrer à la fois le médicament et le dosage')),
       );
     }
   }
@@ -60,12 +62,12 @@ class _PrescriptionViewState extends State<PrescriptionView> {
           endDate: DateTime.parse(endDateController.text),
         );
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Prescription added successfully')),
+          SnackBar(content: Text('Prescription ajoutée avec succès')),
         );
         Navigator.pop(context);
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to add prescription: $e')),
+          SnackBar(content: Text('Échec de l\'ajout de la prescription : $e')),
         );
       }
     }
@@ -74,102 +76,156 @@ class _PrescriptionViewState extends State<PrescriptionView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Add Prescription'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Prescription Details',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 10),
-                TextFormField(
-                  controller: startDateController,
-                  decoration: InputDecoration(
-                    labelText: 'Start Date',
-                    border: OutlineInputBorder(),
-                  ),
-                  readOnly: true,
-                  onTap: () => _selectDate(context, startDateController),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please select a start date';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 10),
-                TextFormField(
-                  controller: endDateController,
-                  decoration: InputDecoration(
-                    labelText: 'End Date',
-                    border: OutlineInputBorder(),
-                  ),
-                  readOnly: true,
-                  onTap: () => _selectDate(context, endDateController),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please select an end date';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 20),
-                Text(
-                  'Medications',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 10),
-                TextFormField(
-                  controller: medicationController,
-                  decoration: InputDecoration(
-                    labelText: 'Medication',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(height: 10),
-                TextFormField(
-                  controller: dosageController,
-                  decoration: InputDecoration(
-                    labelText: 'Dosage',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: _addMedication,
-                  child: Text('Add Medication'),
-                ),
-                SizedBox(height: 10),
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: medications.length,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      margin: EdgeInsets.symmetric(vertical: 5),
-                      child: ListTile(
-                        title: Text(medications[index]['name']),
-                        subtitle: Text(medications[index]['dosage']),
-                      ),
-                    );
-                  },
-                ),
-                SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: _submitPrescription,
-                  child: Text('Submit Prescription'),
-                ),
-              ],
+      appBar: const AppHeader(),
+      body: Column(
+        children: [
+          const Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text(
+              'Ajouter une Prescription',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.teal,
+              ),
+              textAlign: TextAlign.center,
             ),
           ),
-        ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Form(
+                key: _formKey,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Détails de la Prescription',
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 10),
+                      TextFormField(
+                        controller: startDateController,
+                        decoration: InputDecoration(
+                          labelText: 'Date de Début',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          suffixIcon: Icon(Icons.calendar_today),
+                        ),
+                        readOnly: true,
+                        onTap: () => _selectDate(context, startDateController),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Veuillez sélectionner une date de début';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 10),
+                      TextFormField(
+                        controller: endDateController,
+                        decoration: InputDecoration(
+                          labelText: 'Date de Fin',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          suffixIcon: Icon(Icons.calendar_today),
+                        ),
+                        readOnly: true,
+                        onTap: () => _selectDate(context, endDateController),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Veuillez sélectionner une date de fin';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      const Text(
+                        'Médicaments',
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 10),
+                      TextFormField(
+                        controller: medicationController,
+                        decoration: InputDecoration(
+                          labelText: 'Médicament',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      TextFormField(
+                        controller: dosageController,
+                        decoration: InputDecoration(
+                          labelText: 'Dosage',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Center(
+                        child: ElevatedButton(
+                          onPressed: _addMedication,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.teal,
+                            padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 36),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: const Text(
+                            'Ajouter Médicament',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: medications.length,
+                        itemBuilder: (context, index) {
+                          return Card(
+                            margin: const EdgeInsets.symmetric(vertical: 5),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: ListTile(
+                              title: Text(medications[index]['name']),
+                              subtitle: Text(medications[index]['dosage']),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      Center(
+                        child: ElevatedButton(
+                          onPressed: _submitPrescription,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.teal,
+                            padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 36),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: const Text(
+                            'Soumettre Prescription',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const AppFooter(isHomeScreen: false),
+        ],
       ),
     );
   }

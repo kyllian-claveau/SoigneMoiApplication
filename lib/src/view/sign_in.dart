@@ -34,7 +34,7 @@ class _SignInState extends State<SignIn> {
       var body = json.decode(res.body);
 
       if (body['code'] == 401) {
-        _showError('Invalid Credentials');
+        _showError('Identifiants invalides');
       } else if (body['token'] != null) {
         // Decode the token to check for the role
         Map<String, dynamic> decodedToken = JwtDecoder.decode(body['token']);
@@ -47,13 +47,13 @@ class _SignInState extends State<SignIn> {
             MaterialPageRoute(builder: (context) => HomeScreen()),
           );
         } else {
-          _showError('Access denied. Only doctors can log in.');
+          _showError('Accès refusé. Seuls les médecins peuvent se connecter.');
         }
       } else {
-        _showError('Unexpected error. Please try again.');
+        _showError('Erreur inattendue. Veuillez réessayer.');
       }
     } catch (e) {
-      _showError('An error occurred: $e');
+      _showError('Une erreur s\'est produite : $e');
     } finally {
       setState(() {
         _isLoading = false;
@@ -68,84 +68,89 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Flutter-Symfony Rest API'),
-        backgroundColor: Colors.teal,
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const SizedBox(height: 60),
-              Center(
-                child: Image.asset(
-                  'lib/assets/images/logo.png',
-                  height: 100,
-                ),
-              ),
-              const SizedBox(height: 40),
-              TextField(
-                controller: emailController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  hintText: 'E-mail',
-                  labelText: 'E-mail',
-                  prefixIcon: const Icon(Icons.email),
-                  labelStyle: const TextStyle(fontSize: 18),
-                ),
-              ),
-              const SizedBox(height: 24),
-              TextField(
-                controller: passwordController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  hintText: 'Password',
-                  labelText: 'Password',
-                  prefixIcon: const Icon(Icons.lock),
-                  labelStyle: const TextStyle(fontSize: 18),
-                ),
-                obscureText: true,
-              ),
-              const SizedBox(height: 24),
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () {
-                    // TODO: Add forgot password functionality
-                  },
-                  child: const Text('Forgot Password?'),
-                ),
-              ),
-              const SizedBox(height: 24),
-              Align(
-                alignment: Alignment.center,
-                child: _isLoading
-                    ? const CircularProgressIndicator()
-                    : ElevatedButton(
-                  onPressed: login,
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 36),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    backgroundColor: Colors.teal,
-                    foregroundColor: Colors.white,
-                  ),
-                  child: const Text(
-                    'Sign In',
-                    style: TextStyle(fontSize: 16),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                const SizedBox(height: 60),
+                Center(
+                  child: Image.asset(
+                    'lib/assets/images/logo.png',
+                    height: 60, // Taille du logo
                   ),
                 ),
-              ),
-              const SizedBox(height: 16),
-            ],
+                const SizedBox(height: 60),
+                Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        'Bienvenue !',
+                        style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.teal,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 20),
+                      TextField(
+                        controller: emailController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          hintText: 'E-mail',
+                          labelText: 'E-mail',
+                          prefixIcon: const Icon(Icons.email),
+                          labelStyle: const TextStyle(fontSize: 18),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      TextField(
+                        controller: passwordController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          hintText: 'Mot de passe',
+                          labelText: 'Mot de passe',
+                          prefixIcon: const Icon(Icons.lock),
+                          labelStyle: const TextStyle(fontSize: 18),
+                        ),
+                        obscureText: true,
+                      ),
+                      const SizedBox(height: 20),
+                      Align(
+                        alignment: Alignment.center,
+                        child: _isLoading
+                            ? const CircularProgressIndicator()
+                            : ElevatedButton(
+                          onPressed: login,
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 36),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            backgroundColor: Colors.teal,
+                            foregroundColor: Colors.white,
+                          ),
+                          child: const Text(
+                            'Se connecter',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

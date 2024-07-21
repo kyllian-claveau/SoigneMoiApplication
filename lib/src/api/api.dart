@@ -4,7 +4,7 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Api {
-  static const String baseUrl = 'http://10.0.2.2:8000/api';
+  static const String baseUrl = 'https://soignemoiproject.online/api';
 
   Future<http.Response> login(Map<String, String> data) async {
     print(json.encode(data));
