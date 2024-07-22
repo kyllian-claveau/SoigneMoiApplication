@@ -6,7 +6,7 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.teal,
+      backgroundColor: Color(0xFFE01D5B),
       title: Image.asset(
         'lib/assets/images/logo.png',
         height: 40, // Ajustez la taille selon vos besoins

@@ -93,7 +93,7 @@ class _SignInState extends State<SignIn> {
                         style: TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
-                          color: Colors.teal,
+                          color: Colors.black,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -136,7 +136,7 @@ class _SignInState extends State<SignIn> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            backgroundColor: Colors.teal,
+                            backgroundColor: Color(0xFFE01D5B),
                             foregroundColor: Colors.white,
                           ),
                           child: const Text(

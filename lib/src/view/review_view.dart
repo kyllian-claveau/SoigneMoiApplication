@@ -59,7 +59,7 @@ class _ReviewViewState extends State<ReviewView> {
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Colors.teal,
+                color: Colors.black,
               ),
               textAlign: TextAlign.center,
             ),

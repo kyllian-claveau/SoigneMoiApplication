@@ -93,7 +93,7 @@ class _PrescriptionSummaryViewState extends State<PrescriptionSummaryView> {
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Colors.teal,
+                color: Colors.black,
               ),
               textAlign: TextAlign.center,
             ),
@@ -117,11 +117,6 @@ class _PrescriptionSummaryViewState extends State<PrescriptionSummaryView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Prescription ID: ${prescriptionDetails!['id']}',
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 10),
-                        Text(
                           'Date de début: ${prescriptionDetails!['start_date']}',
                           style: TextStyle(fontSize: 18),
                         ),
@@ -138,12 +133,30 @@ class _PrescriptionSummaryViewState extends State<PrescriptionSummaryView> {
                           readOnly: true,
                           onTap: () => _selectDate(context, endDateController),
                         ),
+                        SizedBox(height: 20),
+                        Text(
+                          'Médicaments',
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
                         SizedBox(height: 10),
+                        ...prescriptionDetails!['medications'].map<Widget>((medication) {
+                          return Card(
+                            margin: const EdgeInsets.symmetric(vertical: 5),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: ListTile(
+                              title: Text(medication['name']),
+                              subtitle: Text('Dosage: ${medication['dosage']}'),
+                            ),
+                          );
+                        }).toList(),
+                        SizedBox(height: 20),
                         Center(
                           child: ElevatedButton(
                             onPressed: _updateEndDate,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.teal,
+                              backgroundColor: Color(0xFFE01D5B),
                               padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 36),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),

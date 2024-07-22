@@ -132,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Colors.teal,
+                color: Colors.black,
               ),
               textAlign: TextAlign.center,
             ),
@@ -161,23 +161,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
+                  color: Color(0xFF481C4B),
                   child: ListTile(
                     contentPadding: const EdgeInsets.all(10),
                     title: Text(
                       'Séjour de ${stay['user_firstname']} ${stay['user_lastname']}',
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),
                     ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 5),
-                        Text('Spécialité: ${stay['specialty_id']}', style: const TextStyle(fontSize: 16)),
+                        Text('Raison: ${stay['reason']}', style: const TextStyle(fontSize: 16, color: Colors.white)),
                         const SizedBox(height: 3),
-                        Text('Raison: ${stay['reason']}', style: const TextStyle(fontSize: 16)),
-                        const SizedBox(height: 3),
-                        Text('Date de début: ${_formatDate(stay['start_date'])}', style: const TextStyle(fontSize: 16)),
-                        const SizedBox(height: 3),
-                        Text('Date de fin: ${_formatDate(stay['end_date'])}', style: const TextStyle(fontSize: 16)),
+                        Text('Date : ${_formatDate(stay['start_date'])} - ${_formatDate(stay['end_date'])}', style: const TextStyle(fontSize: 16, color: Colors.white)),
                         const SizedBox(height: 5),
                         TimerCountdown(
                           format: CountDownTimerFormat.hoursMinutesSeconds,
@@ -185,7 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           onEnd: () {
                             setState(() {});
                           },
-                          timeTextStyle: const TextStyle(fontSize: 14, color: Colors.red),
+                          timeTextStyle: const TextStyle(fontSize: 14, color: Colors.white),
                         ),
                       ],
                     ),
@@ -193,11 +190,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.note_add),
+                          icon: const Icon(Icons.note_add, color: Colors.white),
                           onPressed: () => _navigateToReviewView(stay['id']),
                         ),
                         IconButton(
-                          icon: const Icon(Icons.medical_services),
+                          icon: const Icon(Icons.medical_services, color: Colors.white),
                           onPressed: () => _navigateToPrescriptionView(stay['id']),
                         ),
                       ],
