@@ -29,16 +29,10 @@
 <h3>🖥️ Installation des dépendances</h3>
 <ol>
     <li>Clonez le dépôt de l'application mobile :
-        <pre><code>git clone [URL_DU_DEPOT]</code></pre>
-    </li>
-    <li>Accédez au répertoire de l'application mobile :
-        <pre><code>cd SoigneMoiApplication</code></pre>
+        <pre><code>git clone https://github.com/kyllian-claveau/SoigneMoiApplication</code></pre>
     </li>
     <li>Installez les dépendances Flutter :
         <pre><code>flutter pub get</code></pre>
-    </li>
-    <li>Installez les dépendances npm pour tout projet JavaScript associé :
-        <pre><code>npm install</code></pre>
     </li>
 </ol>
 
