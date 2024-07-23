@@ -86,7 +86,7 @@ class _PrescriptionViewState extends State<PrescriptionView> {
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Colors.teal,
+                color: Colors.black,
               ),
               textAlign: TextAlign.center,
             ),
@@ -172,7 +172,7 @@ class _PrescriptionViewState extends State<PrescriptionView> {
                         child: ElevatedButton(
                           onPressed: _addMedication,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.teal,
+                            backgroundColor: Color(0xFFE01D5B),
                             padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 36),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -180,7 +180,7 @@ class _PrescriptionViewState extends State<PrescriptionView> {
                           ),
                           child: const Text(
                             'Ajouter Médicament',
-                            style: TextStyle(fontSize: 16),
+                            style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
                         ),
                       ),
@@ -206,7 +206,7 @@ class _PrescriptionViewState extends State<PrescriptionView> {
                         child: ElevatedButton(
                           onPressed: _submitPrescription,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.teal,
+                            backgroundColor: Color(0xFFE01D5B),
                             padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 36),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -214,7 +214,7 @@ class _PrescriptionViewState extends State<PrescriptionView> {
                           ),
                           child: const Text(
                             'Soumettre Prescription',
-                            style: TextStyle(fontSize: 16),
+                            style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
                         ),
                       ),

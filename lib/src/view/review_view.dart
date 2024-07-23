@@ -110,17 +110,23 @@ class _ReviewViewState extends State<ReviewView> {
                         child: _isLoading
                             ? CircularProgressIndicator()
                             : ElevatedButton(
-                          onPressed: _submitReview,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.teal,
-                            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            textStyle: TextStyle(fontSize: 18),
-                          ),
-                          child: Text('Soumettre l\'Avis'),
-                        ),
+                                onPressed: _submitReview,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Color(0xFFE01D5B),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 10),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  textStyle: TextStyle(
+                                      fontSize: 18, color: Colors.white),
+                                ),
+                                child: const Text(
+                                  'Soumettre l\'avis',
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.white),
+                                ),
+                              ),
                       ),
                     ],
                   ),
